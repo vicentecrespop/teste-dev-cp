@@ -24,20 +24,22 @@ const preencherDadosCep = (cep) => {
 }
 
 
-const pegarCadastrados = () => {
-    fetch('./src/config/read.php')
+const pegarCadastrados = (id = false) => {
+    const url = id ? `./src/config/read.php?id=${id}` : './src/config/read.php'
+    let info = null
+    fetch(url)
         .then(res => res.json())
-        .then(data => gerarTabelaCadastrados(data))
+        .then(data => {
+            if(id) mostrarFormulario(data)
+            else gerarTabelaCadastrados(data)
+        })
         .catch(e => console.log(e))
 }
 
 const adicionarCadastrado = async (e) => {
     e.preventDefault()
+
     const id = $('#id')[0].value
-    if(!id) {
-        return console.log('Não é edição!')
-    }
-    return console.log('Erro')
     const nome = $('#nome')[0].value
     const sobrenome = $('#sobrenome')[0].value
     const cep = $('#cep')[0].value
@@ -51,30 +53,47 @@ const adicionarCadastrado = async (e) => {
         return window.alert('Preencha todos os campos!')
     } 
 
-    const data = {nome, sobrenome, cep, cidade, estado, logradouro, numero, bairro, complemento}
-    fetch('./src/config/create.php', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(e => console.log(e))
+    const data = {id, nome, sobrenome, cep, cidade, estado, logradouro, numero, bairro, complemento}
+    if(!id) {
+        await fetch('./src/config/create.php', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(e => console.log(e))
+    } else {
+        await fetch('./src/config/update.php', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(e => console.log(e))
+    }
 
-    console.log(data)
+    mostrarCadastrados()
+
 }
 
-const editarCadastrado = (e) => {
-
-    fetch('.src/config/update.php', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: 
-    })
+const editarCadastrado = (usuario) => {
+    $('input').removeClass('valid')
+    $('#id')[0].value = usuario[0].id
+    $('#nome')[0].value = usuario[0].nome
+    $('#sobrenome')[0].value = usuario[0].sobrenome
+    $('#cep')[0].value = usuario[0].cep
+    $('#cidade')[0].value = usuario[0].cidade
+    $('#estado')[0].value = usuario[0].estado
+    $('#logradouro')[0].value = usuario[0].rua
+    $('#numero')[0].value = usuario[0].numero
+    $('#bairro')[0].value = usuario[0].bairro
+    $('#complemento')[0].value = usuario[0].complemento
 }
 
 const excluirCadastrado = (id) => {
@@ -95,7 +114,10 @@ const mostrarCadastrados = () => {
     pegarCadastrados()
 }
 
-const mostrarFormulario = () => {
+const novoUsuario = [{id: '', nome: '', sobrenome: '', cep: '', cidade: '', estado: '', rua: '', numero: '', bairro: '', complemento: ''}]
+
+const mostrarFormulario = (usuario = novoUsuario) => {
+    editarCadastrado(usuario)
     const cadastro = $('#formulario')
     const cadastrados = $('#cadastrados')
     cadastro.removeClass('hide')
@@ -120,7 +142,6 @@ const gerarTableHead = (data, thead) => {
     tableRow.innerHTML += '<th>Ação</th>'
     tableRow.innerHTML += '<th>Editar</th>'
     thead.innerHTML = tableRow.innerHTML
-    console.log(tableRow.innerHTML)
 }
 
 const gerarTableBody = (data, tbody) => {
@@ -134,11 +155,10 @@ const gerarTableBody = (data, tbody) => {
             tableRow.appendChild(tableData)
         })
         tableRow.innerHTML += `<td><button onclick='excluirCadastrado(${usuario.id})'>X</button></td>`
-        tableRow.innerHTML += `<td><button onclick='editarCadastrado(${usuario.id})'>Editar</button></td>`
+        tableRow.innerHTML += `<td><button onclick='pegarCadastrados(${usuario.id})'>Editar</button></td>`
         tdata.appendChild(tableRow)
     })
     tbody.innerHTML = tdata.innerHTML
-    console.log(tdata.innerHTML)
 }
 
 
