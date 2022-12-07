@@ -26,7 +26,6 @@ const preencherDadosCep = (cep) => {
 
 const pegarCadastrados = (id = false) => {
     const url = id ? `./src/config/read.php?id=${id}` : './src/config/read.php'
-    let info = null
     fetch(url)
         .then(res => res.json())
         .then(data => {

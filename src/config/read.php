@@ -11,7 +11,7 @@
             
             $fetchClients = $sql->fetchAll();
             echo json_encode($fetchClients);
-            
+
         } else {
             $sql = $pdo->prepare("SELECT * FROM usuarios");
             $sql->execute();
