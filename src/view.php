@@ -118,7 +118,8 @@
               </div>
         </div>
 
-        <div id="cadastrados" class="hide">
+        <div id="cadastrados" class="hide center-align">
+            <span class="hide" id="msg_cadastrados">Não foram cadastrados usuarios.</span>
             <table id="tabela_cadastrados" class="bordered striped centered">
               <thead>
                 <tr id="head_cadastrados">

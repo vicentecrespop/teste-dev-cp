@@ -29,8 +29,15 @@ const pegarCadastrados = (id = false) => {
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            if(id) mostrarFormulario(data)
-            else gerarTabelaCadastrados(data)
+            if(data.length === 0) {
+                $('#tabela_cadastrados').addClass('hide')
+                $('#msg_cadastrados').removeClass('hide')
+            } else {
+                $('#tabela_cadastrados').removeClass('hide')
+                $('#msg_cadastrados').addClass('hide')
+                if(id) mostrarFormulario(data)
+                else gerarTabelaCadastrados(data)
+            }
         })
         .catch(e => console.log(e))
 }
