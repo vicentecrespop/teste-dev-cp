@@ -82,7 +82,7 @@ const adicionarCadastrado = async (e) => {
 }
 
 const editarCadastrado = (usuario) => {
-    $('input').removeClass('valid')
+    $('input').removeClass('valid invalid')
     $('#id')[0].value = usuario[0].id
     $('#nome')[0].value = usuario[0].nome
     $('#sobrenome')[0].value = usuario[0].sobrenome
@@ -134,9 +134,12 @@ const gerarTableHead = (data, thead) => {
     const tableRow = document.createElement('tr')
     const headers = Object.keys(data[0]).slice(10)
     headers.map(header => {
-        const tableHeader = document.createElement('th')
-        tableHeader.innerHTML = header.toUpperCase()
-        tableRow.appendChild(tableHeader)
+        const tableHeader = $('<th></th>')
+        if(header === 'cidade' || header === 'estado' || header === 'rua') {
+            tableHeader.addClass('hide-on-med-and-down')
+        }
+        tableHeader.html(header.toUpperCase())
+        tableHeader.appendTo(tableRow)
     })
     tableRow.innerHTML += '<th>Ação</th>'
     tableRow.innerHTML += '<th>Editar</th>'
@@ -149,12 +152,15 @@ const gerarTableBody = (data, tbody) => {
         const tableRow = document.createElement('tr')
         const dadosUsuario = Object.values(usuario).slice(0, 10)
         dadosUsuario.map(data => {
-            const tableData = document.createElement('td')
-            tableData.innerHTML = data
-            tableRow.appendChild(tableData)
+            const tableData = $('<td></td>')
+            if(data === usuario.cidade || data === usuario.estado || data === usuario.rua) {
+                tableData.addClass('hide-on-med-and-down')
+            }
+            tableData.html(data)
+            tableData.appendTo(tableRow)
         })
-        tableRow.innerHTML += `<td><button onclick='excluirCadastrado(${usuario.id})'>X</button></td>`
-        tableRow.innerHTML += `<td><button onclick='pegarCadastrados(${usuario.id})'>Editar</button></td>`
+        tableRow.innerHTML += `<td><div onclick='pegarCadastrados(${usuario.id})' class="blue-text"><i class="material-icons">mode_edit</i></div></td>`
+        tableRow.innerHTML += `<td><div onclick='excluirCadastrado(${usuario.id})' class="red-text"><i class="material-icons">delete</i></div></td>`
         tdata.appendChild(tableRow)
     })
     tbody.innerHTML = tdata.innerHTML

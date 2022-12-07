@@ -1,0 +1,51 @@
+header {
+    background-color: #00073d;
+    border-top: 0.75rem solid #b30f13;
+}
+
+.social_media {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+}
+
+.selection_buttons {
+    margin: 50px auto;
+}
+
+svg {
+    background-color: white;
+    border-radius: 20px;
+    color: #00073d;
+    padding: 2px;
+}
+
+i.material-icons {
+    font-size: 16px;
+}
+
+#tabela_cadastrados {
+    font-size: 5px;
+}
+
+@media (min-width: 400px) {
+    #tabela_cadastrados {
+        font-size: 8px;
+    }
+}
+
+@media (min-width: 910px) {
+    #tabela_cadastrados {
+        font-size: 16px;
+    }
+
+    i.material-icons {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 370px) {
+    #logo {
+        width: 90%;
+    }
+}

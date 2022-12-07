@@ -1,7 +1,7 @@
 <?php
 
     if(isset($_GET)) {
-      include('./view.php');
+      include('./src/view.php');
     }
 
 ?>
