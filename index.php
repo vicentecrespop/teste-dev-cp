@@ -2,7 +2,6 @@
 
     if(isset($_GET)) {
       include('./view.php');
-      // echo 'Deu boa';
     }
 
 ?>

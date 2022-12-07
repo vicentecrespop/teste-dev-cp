@@ -9,7 +9,7 @@
     $connect;
 
     $pdo = new PDO("{$driver}:host={$server};port={$port};dbname={$dbname}", $user, $password);
-    echo $pdo;
+    
 ?>
 
 
